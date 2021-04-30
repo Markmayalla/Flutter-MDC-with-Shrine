@@ -24,6 +24,22 @@ class _LoginPageState extends State<LoginPage> {
   final _usernamecontroller = TextEditingController();
   final _passwordController = TextEditingController();
 
+  final _unfocusedColor = Colors.grey[600];
+  final _usernameFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _usernameFocusNode.addListener(() {
+      setState(() {});
+    });
+    _passwordFocusNode.addListener(() {
+      setState(() {});
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +52,10 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 Image.asset('assets/diamond.png'),
                 SizedBox(height: 16.0),
-                Text('SHRINE'),
+                Text(
+                  'SHRINE',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
               ],
             ),
             SizedBox(height: 120.0),
@@ -49,9 +68,13 @@ class _LoginPageState extends State<LoginPage> {
             TextField(
               controller: _usernamecontroller,
               decoration: InputDecoration(
-                filled: true,
                 labelText: 'Username',
+                labelStyle: TextStyle(
+                    color: _usernameFocusNode.hasFocus
+                        ? Theme.of(context).accentColor
+                        : _unfocusedColor),
               ),
+              focusNode: _usernameFocusNode,
             ),
 
             //spacer
@@ -63,10 +86,14 @@ class _LoginPageState extends State<LoginPage> {
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
-                filled: true,
                 labelText: 'Password',
+                labelStyle: TextStyle(
+                    color: _passwordFocusNode.hasFocus
+                        ? Theme.of(context).accentColor
+                        : _unfocusedColor),
               ),
               obscureText: true,
+              focusNode: _passwordFocusNode,
             ),
 
             // TODO: Add button bar (101)
@@ -74,6 +101,11 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 FlatButton(
                   child: Text('Cancel'),
+                  shape: BeveledRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(7.0),
+                    ),
+                  ),
                   onPressed: () {
                     _usernamecontroller.clear();
                     _passwordController.clear();
@@ -81,6 +113,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 RaisedButton(
                   child: Text("Next"),
+                  elevation: 8.0,
+                  shape: BeveledRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(7.0),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.pop(context);
                   },

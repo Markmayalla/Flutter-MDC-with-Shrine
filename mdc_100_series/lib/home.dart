@@ -13,6 +13,7 @@
 // limitations under the License.
 import 'package:Shrine/model/product.dart';
 import 'package:Shrine/model/products_repository.dart';
+import 'package:Shrine/supplemental/asymmetric_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -31,9 +32,10 @@ class HomePage extends StatelessWidget {
 
     return products.map((product) {
       return Card(
+        elevation: 0.0,
         clipBehavior: Clip.antiAlias,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             AspectRatio(
               aspectRatio: 18.0 / 11.0,
@@ -47,17 +49,20 @@ class HomePage extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
                       product.name,
-                      style: theme.textTheme.headline6,
+                      style: theme.textTheme.button,
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                     SizedBox(height: 8.0),
                     Text(
                       formatter.format(product.price),
-                      style: theme.textTheme.subtitle2,
+                      style: theme.textTheme.caption,
                     )
                   ],
                 ),
@@ -77,6 +82,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       // TODO: Add app bar (102)
       appBar: AppBar(
+        brightness: Brightness.light,
         leading: IconButton(
           icon: Icon(
             Icons.menu,
@@ -109,11 +115,8 @@ class HomePage extends StatelessWidget {
         ],
       ),
       // TODO: Add a grid view (102)
-      body: GridView.count(
-        crossAxisCount: 2,
-        padding: EdgeInsets.all(16.0),
-        childAspectRatio: 8.0 / 9.0,
-        children: _buildGridCards(context),
+      body: AsymmetricView(
+        products: ProductsRepository.loadProducts(Category.all),
       ),
       // TODO: Set resizeToAvoidBottomInset (101)
       resizeToAvoidBottomInset: false,
